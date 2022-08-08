@@ -1,9 +1,60 @@
+@import 'mixins';
+
 html,
 body {
   padding: 0;
+  margin: auto;
+  max-width: 1250px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h2 {
+  padding-bottom: 8px;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 32px;
+}
+
+p {
+  margin: 0;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/*
+#__next {
+  max-width: 1250px;
+}
+*/
+header {
+  padding: 16px 30px 32px 30px;
+  .nav {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    li {
+      padding-left: 24px;
+      @include navigate;
+    }
+  }
+  min-height: 108px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #000000;
+}
+
+footer {
+  text-align: left;
+  font-size: 12px;
+  padding: 0 30px 16px 16px;
 }
 
 a {
@@ -11,16 +62,23 @@ a {
   text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
+@media screen and (max-width: 770px) {
+  header {
+    padding: 16px;
+    .nav {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding-top: 16px;
+      li {
+        padding-right: 24px;
+        padding-left: 0;
+        @include navigate;
+      }
+    }
+    min-height: 168px;
     color: white;
-    background: black;
+    display: block;
+    border: 1px solid #000000;
   }
 }

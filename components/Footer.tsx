@@ -3,7 +3,7 @@ import { FC } from 'react';
 const Footer:FC = () => {
     return (
         <footer>
-            <h2>it is footer</h2>
+            <p>2022 © Все права и планета защищены</p>
         </footer>
     )
 };
