@@ -27,19 +27,15 @@ p {
   line-height: 24px;
 }
 
-/*
-#__next {
-  max-width: 1250px;
-}
-*/
 header {
   padding: 16px 30px 32px 30px;
-  .nav {
+  position: relative;
+  nav {
     list-style: none;
     display: flex;
     margin: 0;
     padding: 0;
-    li {
+    a {
       padding-left: 24px;
       @include navigate;
     }
@@ -49,6 +45,15 @@ header {
   display: flex;
   justify-content: space-between;
   border: 1px solid #000000;
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+  }
 }
 
 footer {

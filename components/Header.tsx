@@ -1,41 +1,80 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, useRef } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import CSS from "csstype";
 
+type BGStyle = {
+  css: CSS.Properties;
+  url: string;
+}
+
+const navData = [
+  {id: 0, name: 'Астеройды', path: '/'},
+  {id: 1, name: 'Заказ', path: '/cart'},
+]
+
 const Header: FC = () => {
-  const [bgstyle, setBgstyle] = useState<CSS.Properties>({ display: "flex" });
+  const [bgstyle, setBgstyle] = useState<BGStyle>({css: { display: "flex" }, url: ''});
+  const firstRender = useRef(false);
+  const { pathname } = useRouter();
   const fetchImg = async () => {
+    /*
     const response = await fetch(
       "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
     );
     const data = await response.json();
-    if (data.error || !data) {
+
+    switch (data.media_type) {
+      case 'video': {
+        setBgstyle({css: { display: "flex" }, url: data.url});
+        return;
+      }
+      case 'picture': {
         const backgroundStyle: CSS.Properties = {
-            backgroundColor: 'rgb(125, 152, 240)',
-          };
-          setBgstyle(backgroundStyle);
-    } else {
+          background: `url(${data.hdurl}) no-repeat`,
+          backgroundPosition: "center",
+        };
+        setBgstyle({css: backgroundStyle, url: ''});
+        return;
+      }
+      default: {
         const backgroundStyle: CSS.Properties = {
-            background: `url(${data.hdurl}) no-repeat`,
-            backgroundPosition: "center",
-          };
-          setBgstyle(backgroundStyle);
+          backgroundColor: 'rgb(125, 152, 240)',
+        };
+        setBgstyle({css: backgroundStyle, url: ''});
+        return;
+      }
     }
+    */
+    const backgroundStyle: CSS.Properties = {
+      backgroundColor: 'rgb(125, 152, 240)',
+    };
+    setBgstyle({css: backgroundStyle, url: ''});
   };
 
   useEffect(() => {
-    fetchImg();
+    if (firstRender.current) {
+      fetchImg();
+    }
+    firstRender.current = true;
   }, []);
 
+  const videoFrame = <iframe src={`${bgstyle.url}?controls=0&showinfo=0&rel=0&autoplay=1&loop=1&playlist=${bgstyle.url.slice(30,41)}`} frameBorder="0" allowFullScreen></iframe>;
+
   return (
-    <header style={bgstyle}>
+    <header style={bgstyle.css}>
+      {bgstyle.url !== '' ? videoFrame : null}
       <div className="title">
         <h2>ARMAGGEDON V2</h2>
         <p>Сервис заказа уничтожения астероидов, опасно подлетающих к Земле.</p>
       </div>
-        <ul className="nav">
-          <li className="active">Астеройды</li>
-          <li>Заказ</li>
-        </ul>
+        <nav>
+          {navData.map((item) => <Link
+            key={item.id}
+            href={item.path}>
+              <a className={item.path === pathname ? "active" : ''}>{item.name}</a>
+            </Link>)}
+        </nav>
     </header>
   );
 };

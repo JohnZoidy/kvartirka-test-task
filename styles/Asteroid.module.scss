@@ -14,6 +14,13 @@
         height: 24px;
         font-size: 11px;
         letter-spacing: 1px;
+        cursor: pointer;
+        &.active {
+            background: #0e9720;
+        }
+    }
+    button:hover {
+        background: #ff1c4f;
     }
 }
 
@@ -22,8 +29,18 @@
 }
 
 .signature {
+    width: 184px;
     p {
         margin: 0;
     }
+    a {
+        display: block;
+        text-decoration: underline;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
     padding-left: 11px;
 }
+
+

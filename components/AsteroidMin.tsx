@@ -5,7 +5,7 @@ import styles from '../styles/Asteroid.module.scss'
 import { AsteroidType } from '../types';
 import { StateContext } from '../contexts/stateContext';
 
-const Asteroid:FC<AsteroidType> = ({id, date, name, size, distance, isDanger, distanceSort, inCart }) => {
+const AsteroidMin:FC<AsteroidType> = ({id, date, name, size, distance, isDanger, distanceSort, inCart }) => {
     const dateParser = (date: string) => {
          const result = new Date(date);
         return result.toLocaleString('ru', {
@@ -34,4 +34,4 @@ const Asteroid:FC<AsteroidType> = ({id, date, name, size, distance, isDanger, di
     )
 };
 
-export default Asteroid;
+export default AsteroidMin;
