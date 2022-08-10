@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import CSS from "csstype";
@@ -15,7 +15,6 @@ const navData = [
 
 const Header: FC = () => {
   const [bgstyle, setBgstyle] = useState<BGStyle>({css: { display: "flex" }, url: ''});
-  const firstRender = useRef(false);
   const { pathname } = useRouter();
   const fetchImg = async () => {
     const response = await fetch(
@@ -48,10 +47,7 @@ const Header: FC = () => {
   };
 
   useEffect(() => {
-    if (firstRender.current) {
       fetchImg();
-    }
-    firstRender.current = true;
   }, []);
 
   const videoFrame = <iframe src={`${bgstyle.url}?controls=0&showinfo=0&rel=0&autoplay=1&loop=1&playlist=${bgstyle.url.slice(30,41)}`} frameBorder="0" allowFullScreen></iframe>;
