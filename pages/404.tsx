@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
-// import styles from "../styles/404.module.scss";
 
 const ErrorPage = () => {
   const router = useRouter();
@@ -15,11 +14,11 @@ const ErrorPage = () => {
   return (
     <>
       <Head>
-        <title>404 page not found</title>
+        <title>404 страница не найдена</title>
       </Head>
       <div>
         <h1>404</h1>
-        <h2>Something is going wrong...</h2> 
+        <h2>Страница не найдена, возможно вы ошиблись при воде адреса? Переходим на главную...</h2> 
       </div>
     </>
   )

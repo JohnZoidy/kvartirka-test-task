@@ -1,4 +1,4 @@
-import { FC, useState, useContext } from 'react';
+import { FC, useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from '../styles/AsteroidMin.module.scss'

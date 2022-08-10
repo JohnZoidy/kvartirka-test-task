@@ -1,4 +1,4 @@
-import { FC, useState, useContext } from 'react';
+import { FC, useContext } from 'react';
 import styles from '../styles/Asteroid.module.scss'
 import { dateParser } from '../misc/utils';
 import { AsteroidType, Approach } from '../misc/types';

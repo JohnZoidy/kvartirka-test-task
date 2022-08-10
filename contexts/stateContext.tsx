@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 import { AsteroidType } from "../misc/types";
 
 type StateType= {
-  state: any[];
+  state: AsteroidType[];
   cartHandler: Function;
   addToState: Function;
   removeFromState: Function;

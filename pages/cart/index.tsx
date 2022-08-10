@@ -29,10 +29,10 @@ const Cart: NextPage = () => {
               <Link key={item.id} href={`/asteroid/${item.id}`}><li className={item.is_potentially_hazardous_asteroid ? styles.danger : styles.safe}><a>{item.name}</a></li></Link>
             ))}
           </ul>
-          <button className={launch ? styles.btn_disabled : styles.btn} onClick={launchHandler} disabled={launch}>Отправить заказ</button>
+          <button className={styles.btn} onClick={launchHandler}>Отправить заказ</button>
         </div>
-        <div className={launch ? styles.rocketship_active : styles.rocketship}/>
         <div className={styles.description}>Бригада им. Брюса Уиллиса готова отправиться на выбранные астероиды.<br/>Бригада будет доставлена на астероид в нужный момент и выполнит свою нелёгкую работу.</div>
+        <div className={launch ? styles.rocketship_active : styles.rocketship}/>
         </div>
         </>
       ) : (

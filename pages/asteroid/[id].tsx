@@ -1,14 +1,12 @@
 import type { NextPage, GetServerSideProps } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import { useContext } from "react";
 import { StateContext } from "../../contexts/stateContext";
 import Asteroid from '../../components/Asteroid';
 import ErrorPage from '../404';
 import { AsteroidType } from "../../misc/types";
-import styles from "../../styles/Asteroid.module.scss";
 
-type contactTypeProps = {
+type AsteroidInfoProps = {
     asteroidId: string,
   }
 
@@ -18,7 +16,7 @@ export const getServerSideProps:GetServerSideProps = async (context) => {
     }
 };
 
-const AsteroidInfo: NextPage<contactTypeProps> = ({ asteroidId }) => {
+const AsteroidInfo: NextPage<AsteroidInfoProps> = ({ asteroidId }) => {
   const { state } = useContext(StateContext);
   const item = state.find((item: AsteroidType) => item.id === asteroidId);
   if (!item) {

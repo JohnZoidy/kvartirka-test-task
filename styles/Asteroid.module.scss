@@ -100,4 +100,8 @@
     opacity: 0.8;
 }
 
-
+@media screen and (max-width: 800px) {
+  .bgearth, .bgasteroid {
+    visibility: hidden;
+}
+}

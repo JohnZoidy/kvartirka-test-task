@@ -9,11 +9,13 @@ import { StateContext } from '../contexts/stateContext';
 
 let today = new Date();
 let todayString = new Date().toJSON().slice(0,10);
+type HomeProps = {
+  asteroids: AsteroidType[];
+}
 
 export const getStaticProps:GetStaticProps = async () => {
   const response = await fetch(`https://api.nasa.gov/neo/rest/v1/feed?start_date=${todayString}&end_date=${todayString}&api_key=DEMO_KEY`);
   const data = await response.json();
-  console.log('in getStaticProps', data);
 
   if (data.error) {
     return {
@@ -30,7 +32,7 @@ export const getStaticProps:GetStaticProps = async () => {
   }
 };
 
-const Home: NextPage<any> = ({ asteroids }) => {
+const Home: NextPage<HomeProps> = ({ asteroids }) => {
   const { state, addToState } = useContext(StateContext);
   const [distanceSort, setDistanceSort] = useState<DistanceSort>('kilometers');
   const [dangerSort, setDangerSort] = useState<boolean>(false);
@@ -42,13 +44,13 @@ const Home: NextPage<any> = ({ asteroids }) => {
       `https://api.nasa.gov/neo/rest/v1/feed?start_date=${todayString}&end_date=${todayString}&api_key=DEMO_KEY`
     );
     const newData = await res.json();
-    const result = newData.near_earth_objects[todayString];
-    result.forEach((item: any) => item.inCart = false);
+    const result:AsteroidType[] = newData.near_earth_objects[todayString];
+    result.forEach((item) => item.inCart = false);
     addToState(result);
   };
   useEffect(() => {
     if (state.length === 0) {
-      asteroids.forEach((item: any) => item.inCart = false);
+      asteroids.forEach((item) => item.inCart = false);
       addToState(asteroids);
     }
   }, []);
@@ -82,8 +84,8 @@ const Home: NextPage<any> = ({ asteroids }) => {
         }}
       >
       {(dangerSort ?
-        state.filter((item: AsteroidType) => item.is_potentially_hazardous_asteroid === true) : state)
-        .map((item: AsteroidType) => <AsteroidMin key={item.id} item={item} sort={distanceSort} />)}
+        state.filter((item) => item.is_potentially_hazardous_asteroid === true) : state)
+        .map((item) => <AsteroidMin key={item.id} item={item} sort={distanceSort} />)}
         </InfiniteScroll>
       </>
   )
