@@ -18,7 +18,6 @@ const Header: FC = () => {
   const firstRender = useRef(false);
   const { pathname } = useRouter();
   const fetchImg = async () => {
-    /*
     const response = await fetch(
       "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
     );
@@ -29,10 +28,11 @@ const Header: FC = () => {
         setBgstyle({css: { display: "flex" }, url: data.url});
         return;
       }
-      case 'picture': {
+      case 'image': {
         const backgroundStyle: CSS.Properties = {
           background: `url(${data.hdurl}) no-repeat`,
-          backgroundPosition: "center",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
         };
         setBgstyle({css: backgroundStyle, url: ''});
         return;
@@ -45,11 +45,6 @@ const Header: FC = () => {
         return;
       }
     }
-    */
-    const backgroundStyle: CSS.Properties = {
-      backgroundColor: 'rgb(125, 152, 240)',
-    };
-    setBgstyle({css: backgroundStyle, url: ''});
   };
 
   useEffect(() => {
@@ -64,8 +59,8 @@ const Header: FC = () => {
   return (
     <header style={bgstyle.css}>
       {bgstyle.url !== '' ? videoFrame : null}
-      <div className="title">
-        <h2>ARMAGGEDON V2</h2>
+      <div>
+        <Link href='/'><h2 className="logo">ARMAGGEDON V2</h2></Link>
         <p>Сервис заказа уничтожения астероидов, опасно подлетающих к Земле.</p>
       </div>
         <nav>

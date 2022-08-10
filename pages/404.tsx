@@ -13,7 +13,7 @@ const ErrorPage = () => {
   }, [router]);
 
   return (
-    <div>
+    <>
       <Head>
         <title>404 page not found</title>
       </Head>
@@ -21,7 +21,7 @@ const ErrorPage = () => {
         <h1>404</h1>
         <h2>Something is going wrong...</h2> 
       </div>
-    </div>
+    </>
   )
 };
 

@@ -1,35 +1,33 @@
 import { FC, useState, useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import styles from '../styles/Asteroid.module.scss'
-import { AsteroidType } from '../types';
+import styles from '../styles/AsteroidMin.module.scss'
+import { dateParser } from '../misc/utils';
+import { AsteroidType, DistanceSort } from '../misc/types';
 import { StateContext } from '../contexts/stateContext';
 
-const AsteroidMin:FC<AsteroidType> = ({id, date, name, size, distance, isDanger, distanceSort, inCart }) => {
-    const dateParser = (date: string) => {
-         const result = new Date(date);
-        return result.toLocaleString('ru', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        });
-    };
+type AsteroidMinProps = {
+    item: AsteroidType,
+    sort: DistanceSort;
+}
+
+const AsteroidMin:FC<AsteroidMinProps> = ({ item, sort}) => {
     const { cartHandler } = useContext(StateContext);
     return (
         <div className={styles.asteroid}>
-            <p>{dateParser(date)}</p>
+            <p>{dateParser(item.close_approach_data[0].close_approach_date)}</p>
             <div className={styles.card}>
                 <div>
-                    <Image src={isDanger ? '/danger.png' : '/safe.png'} width="93px" height="95px" alt="safe" />
+                    <Image src={item.is_potentially_hazardous_asteroid ? '/danger.png' : '/safe.png'} width="93px" height="95px" alt="safe" />
                 </div>
                 <div className={styles.signature}>
-                    <Link href={`/asteroid/${id}`}>{`Астеройд ${name}`}</Link>
-                    <p>Ø {Math.round(size.estimated_diameter_min)} - {Math.round(size.estimated_diameter_max)} м</p>
-                    <p>↔ {parseInt(distance[distanceSort])} {distanceSort === 'lunar' ? 'расст. до Луны' : 'км'}</p>
-                    <p>{isDanger ? 'Опасен' : 'Не опасен'}</p>
+                    <Link href={`/asteroid/${item.id}`}>{`Астеройд ${item.name}`}</Link>
+                    <p>Ø {Math.round(item.estimated_diameter.meters.estimated_diameter_min)} - {Math.round(item.estimated_diameter.meters.estimated_diameter_min)} м</p>
+                    <p>↔ {parseInt(item.close_approach_data[0].miss_distance[sort])} {sort === 'lunar' ? 'расст. до Луны' : 'км'}</p>
+                    <p>{item.is_potentially_hazardous_asteroid ? 'Опасен' : 'Не опасен'}</p>
                 </div>
             </div>
-            <button className={inCart ? styles.active : ''} onClick={() => cartHandler(id)}>{inCart ? 'не уничтожать' : 'уничтожить'}</button>
+            <button className={item.inCart ? styles.active : ''} onClick={() => cartHandler(item.id)}>{item.inCart ? 'не уничтожать' : 'уничтожить'}</button>
         </div>
     )
 };

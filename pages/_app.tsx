@@ -8,7 +8,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <Layout>
       <main>
         <StateProvider>
+        <div className='wrapper'>
           <Component {...pageProps} />
+        </div>
         </StateProvider>
       </main>
     </Layout>

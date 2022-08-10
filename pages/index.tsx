@@ -4,15 +4,13 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
 import AsteroidMin from '../components/AsteroidMin';
-import { DistanceType } from '../types';
+import { AsteroidType, DistanceSort } from '../misc/types';
 import { StateContext } from '../contexts/stateContext';
-import * as dataJson from '../components/feed.json';
 
 let today = new Date();
 let todayString = new Date().toJSON().slice(0,10);
 
 export const getStaticProps:GetStaticProps = async () => {
-  /*
   const response = await fetch(`https://api.nasa.gov/neo/rest/v1/feed?start_date=${todayString}&end_date=${todayString}&api_key=DEMO_KEY`);
   const data = await response.json();
   console.log('in getStaticProps', data);
@@ -27,20 +25,16 @@ export const getStaticProps:GetStaticProps = async () => {
       notFound: true,
     }
   }
-*/
-  const data = JSON.stringify(dataJson); //tmp
-  const eee = JSON.parse(data); //tmp
   return {
-    props: { asteroids: eee.near_earth_objects[todayString] },
+    props: { asteroids: data.near_earth_objects[todayString] },
   }
 };
 
 const Home: NextPage<any> = ({ asteroids }) => {
   const { state, addToState } = useContext(StateContext);
-  const [distanceSort, setDistanceSort] = useState<DistanceType>('kilometers');
+  const [distanceSort, setDistanceSort] = useState<DistanceSort>('kilometers');
   const [dangerSort, setDangerSort] = useState<boolean>(false);
   const getMoreData = async () => {
-    /*
     const nextDay = today.setDate(today.getDate() + 1);
     today = new Date(nextDay);
     todayString = new Date(nextDay).toJSON().slice(0,10);
@@ -48,25 +42,22 @@ const Home: NextPage<any> = ({ asteroids }) => {
       `https://api.nasa.gov/neo/rest/v1/feed?start_date=${todayString}&end_date=${todayString}&api_key=DEMO_KEY`
     );
     const newData = await res.json();
-    */
-    const data = JSON.stringify(dataJson); //tmp
-    const newData = JSON.parse(data); //tmp
-
     const result = newData.near_earth_objects[todayString];
     result.forEach((item: any) => item.inCart = false);
     addToState(result);
   };
   useEffect(() => {
+    if (state.length === 0) {
       asteroids.forEach((item: any) => item.inCart = false);
       addToState(asteroids);
+    }
   }, []);
 
   return (
-    <div className={styles.wrapper}>
+    <>
       <Head>
         <title>Home</title>
         <meta name="description" content="Earth security from fangerous asteroids" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
         <h2>Ближайшие подлёты</h2>
         <div className={styles.sort}>
@@ -91,20 +82,10 @@ const Home: NextPage<any> = ({ asteroids }) => {
         }}
       >
       {(dangerSort ?
-        state.filter((item: any) => item.is_potentially_hazardous_asteroid === true) : state)
-        .map((item: any) => <AsteroidMin
-        key={item.id}
-        id={item.id}
-        name={item.name}
-        date={item.close_approach_data[0].close_approach_date}
-        size={item.estimated_diameter.meters}
-        distance={item.close_approach_data[0].miss_distance}
-        isDanger={item.is_potentially_hazardous_asteroid}
-        distanceSort={distanceSort}
-        inCart={item.inCart}
-        />)}
+        state.filter((item: AsteroidType) => item.is_potentially_hazardous_asteroid === true) : state)
+        .map((item: AsteroidType) => <AsteroidMin key={item.id} item={item} sort={distanceSort} />)}
         </InfiniteScroll>
-    </div>
+      </>
   )
 }
 

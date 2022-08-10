@@ -1,14 +1,6 @@
 @import 'mixins';
 @import 'spinner';
 
-.wrapper {
-    color: black;
-    margin: 24px 30px 40px 30px;
-    h2 {
-        border-bottom: 1px solid #D7D7D7;
-    }
-}
-
 .sort {
     display: flex;
     padding-top: 8px;

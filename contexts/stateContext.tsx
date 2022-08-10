@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { AsteroidType } from "../misc/types";
 
 type StateType= {
   state: any[];
@@ -14,7 +15,7 @@ type Props = {
 const StateContext = createContext<StateType>({state: [], cartHandler: () => {}, removeFromState: () => {}, addToState: () => {}});
 
 const StateProvider = ({ children }: Props) => {
-  const [state, setState] = useState<any []>([]);
+  const [state, setState] = useState<AsteroidType []>([]);
   const cartHandler = (id: string) => {
     const newState = state.map((item) => {
       if (item.id === id) {
@@ -25,7 +26,7 @@ const StateProvider = ({ children }: Props) => {
     });
     setState(newState);
   };
-  const addToState = (value: any) => {
+  const addToState = (value: AsteroidType[]) => {
     setState([...state, ...value]);
   };
   const removeFromState = () => {
