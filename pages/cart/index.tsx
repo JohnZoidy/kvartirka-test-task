@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import { useContext, useState } from "react";
@@ -7,10 +8,14 @@ import styles from "../../styles/Cart.module.scss";
 
 const Cart: NextPage = () => {
   const { state, removeFromState } = useContext(StateContext);
+  const router = useRouter();
   const [launch, setLaunch] = useState(false);
   const launchHandler = () => {
     setLaunch(true);
-    setTimeout(removeFromState, 2200);
+    setTimeout(removeFromState, 2500);
+    setTimeout(() => {
+      router.push('/');
+    }, 4000);
   };
 
   const list = state.filter((item: any) => item.inCart);
@@ -19,7 +24,18 @@ const Cart: NextPage = () => {
       <Head>
         <title>Cart</title>
       </Head>
-      {list.length !== 0 ? (
+      {list.length === 0 && launch &&
+          <div className={styles.empty}>
+          <p>Бригада успешно выполнила свою работу! Возвращаемся на главную...</p>
+          <div className={styles.successbg}/>
+        </div>
+      }
+      {list.length === 0 && !launch &&
+      <div className={styles.empty}>
+          <p>Список пуст. Похоже, вы ничего не выбрали для уничтожения. <Link href='/'>Сделайте это</Link>, и бригада им. Брюса Уиллиса покажет вам мастер класс!</p>
+          <div className={styles.emptybg}/>
+        </div>}
+      {list.length !== 0 &&
         <>
         <h2>Список на уничтожение</h2>
         <div className={styles.dashboard}>
@@ -35,12 +51,7 @@ const Cart: NextPage = () => {
         <div className={launch ? styles.rocketship_active : styles.rocketship}/>
         </div>
         </>
-      ) : (
-        <div className={styles.empty}>
-          <p>Список пуст. Похоже, вы ничего не выбрали для уничтожения. <Link href='/'>Сделайте это</Link>, и бригада им. Брюса Уиллиса покажет вам мастер класс!</p>
-          <div className={styles.emptybg}/>
-        </div>
-      )}
+        }
     </>
   );
 };

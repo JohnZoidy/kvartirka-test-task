@@ -149,6 +149,56 @@
   }
 }
 
+
+.successbg {
+    position: relative;
+    top: 20%;
+    left: 45%;
+    width: 100px;
+    height: 100px;
+    background: url('/asteroid.png') no-repeat;
+    background-size: cover;
+    animation: success 3s both;
+}
+
+.successbg::after,
+.successbg::before {
+  content: '';  
+  box-sizing: border-box;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid #fa5050;
+  background: #ff1c4f;
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  animation: animloader2 3s linear;
+}
+.successbg::after {
+  animation-delay: 1s;
+}
+
+@keyframes success {
+    0% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        }
+  }
+
+  @keyframes animloader2 {
+    0% {
+      transform: scale(0);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(5);
+      opacity: 0;
+    }
+  }
+
 @media screen and (max-width: 1020px) {
     .btn {
         padding: 4px 12px;

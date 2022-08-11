@@ -6,15 +6,18 @@ import styles from '../styles/Home.module.scss'
 import AsteroidMin from '../components/AsteroidMin';
 import { AsteroidType, DistanceSort } from '../misc/types';
 import { StateContext } from '../contexts/stateContext';
+import { datePicker } from '../misc/utils';
 
-let today = new Date();
-let todayString = new Date().toJSON().slice(0,10);
 type HomeProps = {
   asteroids: AsteroidType[];
 }
 
+let counter = 1;
+
 export const getStaticProps:GetStaticProps = async () => {
-  const response = await fetch(`https://api.nasa.gov/neo/rest/v1/feed?start_date=${todayString}&end_date=${todayString}&api_key=DEMO_KEY`);
+  const { todayString, nextdayString } = datePicker(counter);
+  console.log('date in staticProps, ', todayString, nextdayString);
+  const response = await fetch(`https://api.nasa.gov/neo/rest/v1/feed?start_date=${todayString}&end_date=${nextdayString}&api_key=DEMO_KEY`);
   const data = await response.json();
 
   if (data.error) {
@@ -28,7 +31,7 @@ export const getStaticProps:GetStaticProps = async () => {
     }
   }
   return {
-    props: { asteroids: data.near_earth_objects[todayString] },
+    props: { asteroids: [...data.near_earth_objects[todayString], ...data.near_earth_objects[nextdayString]] },
   }
 };
 
@@ -37,14 +40,13 @@ const Home: NextPage<HomeProps> = ({ asteroids }) => {
   const [distanceSort, setDistanceSort] = useState<DistanceSort>('kilometers');
   const [dangerSort, setDangerSort] = useState<boolean>(false);
   const getMoreData = async () => {
-    const nextDay = today.setDate(today.getDate() + 1);
-    today = new Date(nextDay);
-    todayString = new Date(nextDay).toJSON().slice(0,10);
+    counter += 2;
+    const { todayString, nextdayString } = datePicker(counter);
     const res = await fetch(
-      `https://api.nasa.gov/neo/rest/v1/feed?start_date=${todayString}&end_date=${todayString}&api_key=DEMO_KEY`
+      `https://api.nasa.gov/neo/rest/v1/feed?start_date=${todayString}&end_date=${nextdayString}&api_key=DEMO_KEY`
     );
     const newData = await res.json();
-    const result:AsteroidType[] = newData.near_earth_objects[todayString];
+    const result:AsteroidType[] = [...newData.near_earth_objects[todayString], ...newData.near_earth_objects[nextdayString]];
     result.forEach((item) => item.inCart = false);
     addToState(result);
   };
